@@ -1,3 +1,10 @@
+//In this API we did the CURD operations using GET, POST, PUT, DELETE with the help of Express
+//node version: v18.18.0, npm version : 9.8.1, Windows 10 64GB
+//Express.js is a small framework that works on top of Node.js web server functionality to simplify its APIs and add helpful new features. It makes it easier to organize your 
+    //application’s functionality with middleware and routing. It adds helpful utilities to Node.js HTTP objects and facilitates the rendering of dynamic HTTP objects.
+//Before running the sampleApi.js file, try to run the command $npm install. To install the dependencies in package.json file
+//To run the sampleApi.js, use the command $ node sampleApi.js
+
 package.json:
 
 {

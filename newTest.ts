@@ -42,9 +42,16 @@ app.post('/api/user',(req,res)=>{ //Add new element to the file
         // Check for errors 
         if (err) throw err; 
         //Converts the JSON data into JavaScript
-        const u : [{"id": Number,"name": String}] = JSON.parse(data);
+        const u : [{"id": number,"name": String}] = JSON.parse(data);
+        const g : number =u.length;
+        var i : number = 0;
+        var value : number = 0;
+        while(i<g){
+            value = u[i].id;
+            i++;
+        }
         const user ={ 
-            id:u.length+1,
+            id:value+1,
             name : req.body.name
         };
         users.push(user);
@@ -66,18 +73,21 @@ app.put('/api/user/:id',(req,res)=>{ //Update or change the value in the file us
         // Check for errors 
         if (err) throw err; 
         // Converting to JSON 
-        const u : [{"id": Number,"name": String}] = JSON.parse(data); 
+        const u : [{"id": number,"name": String}] = JSON.parse(data); 
         const g : number =u.length;
         var i : number =0;
         while(i<g)
         {
             if(u[i]===undefined)
             res.status(404).send('404 Undefined');
+            var value : number = 0;
             if(req.params.id==u[i].id){
+                value = i;
                 const user ={ 
                     name: req.body.name
                 };
-                x[req.params.id-1].name = user.name;
+                console.log(value);
+                x[value].name = user.name;
                 // users.push();
                 fs.writeFile("C:/Users/user/Desktop/Pro Journal/Files/Java script/data/users.json", JSON.stringify(x), err => { 
                     // Checking for errors 
@@ -85,8 +95,10 @@ app.put('/api/user/:id',(req,res)=>{ //Update or change the value in the file us
                 });
                 res.send(users);
             };
+                        
             i++;
         }
+        res.status(404).send('404 NOT FOUND');
     });
 });
 
@@ -97,26 +109,27 @@ app.delete('/api/user/:id',(req,res)=>{ //Delete the value from the file
         // Check for errors 
         if (err) throw err; 
         // Converting to JSON 
-        const u : [{"id": Number,"name": String}] = JSON.parse(data);
+        const u : [{"id": number,"name": String}] = JSON.parse(data);
         const g : number =u.length;
         var i : number =0;
+        var value : number =0;
         while(i<g)
         {
             if(u[i]==undefined){
                 res.status(404).send('404 Undefined');
-            };    
+            };  
+            if(req.params.id==u[i].id){
+                x.splice(i,1);
+                fs.writeFile("C:/Users/user/Desktop/Pro Journal/Files/Java script/data/users.json", JSON.stringify(x), err => { 
+                    // Checking for errors 
+                    if (err) throw res.status(404).send('404 NOT FOUND');
+                }); 
+                res.send(x);
+            }  
+            
             i++;
         }
-        x.splice(req.params.id-1,1);
-        
-        //users.push();
-        //res.send(users);
-        fs.writeFile("C:/Users/user/Desktop/Pro Journal/Files/Java script/data/users.json", JSON.stringify(x), err => { 
-            // Checking for errors 
-            if (err) throw res.status(404).send('404 NOT FOUND');
-        }); 
-        res.send(x);
-        //res.status(404).send('404 NOT FOUND');
+        res.status(404).send('404 NOT FOUND');
     });
 });
 

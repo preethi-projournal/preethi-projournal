@@ -1,8 +1,14 @@
+import { type } from "os";
+
 //const users : [{"id": Number,"name": String}] = require("./data/users"); //Import users.json in data folder. 'require' will always load the JSON data as a JavaScript object
 const express = require("express"); //Import the express module into the file
 const app = express(); 
 app.use(express.json()); //express.json() is a middleware function that parses JSON payload, if any, in the incoming API requests
 const fs = require("fs");//To use the file system operation 
+type Users = {
+    id : number;
+    name : String;
+};
 
 //http://localhost:3000/api/users
 app.get('/api/users',(req,res)=>{ //Get all the user from the list
@@ -10,7 +16,7 @@ app.get('/api/users',(req,res)=>{ //Get all the user from the list
         // Check for errors 
         if (err) throw res.status(500).send('BAD REQUEST');
         // Converting to JSON 
-        const u : [{"id": Number,"name": String}] = JSON.parse(data);
+        const u : [Users] = JSON.parse(data);
     res.send(u);
     });
 });
@@ -24,8 +30,10 @@ app.get('/api/user/:id',(req,res)=>{  //Get the specific user from the list
         // Check for errors 
         if (err) throw res.status(500).send('BAD REQUEST'); 
         // Converting to JSON 
-        const u : [{"id": Number,"name": String}] = JSON.parse(data); 
-        const g : number = u.length;
+        const u : [Users] = JSON.parse(data); 
+        var g : number = u.length;
+        
+        //const g : number = u.length;
         var i : number = 0;
         if(isNaN(req.params.id)){
             res.status(500).send('BAD REQUEST');// ID in the request does not exsists
@@ -53,8 +61,8 @@ app.post('/api/user',(req,res)=>{ //Add new element to the file
         // Check for errors 
         if (err) throw res.status(500).send('BAD REQUEST'); 
         //Converts the JSON data into JavaScript
-        const u : [{"id": number,"name": String}] = JSON.parse(data);
-        const g : number =u.length;
+        const u : [Users] = JSON.parse(data); 
+        var g : number = u.length;
         var i : number = 0;
         var value : number = 0;
         while(i<g){
@@ -85,9 +93,9 @@ app.put('/api/user/:id',(req,res)=>{ //Update or change the value in the file us
         // Check for errors 
         if (err) throw res.status(500).send('BAD REQUEST'); 
         // Converting to JSON 
-        const u : [{"id": number,"name": String}] = JSON.parse(data); 
-        const x : [{"id": Number,"name": String}] = u;
-        const g : number =u.length;
+        const u : [Users] = JSON.parse(data); 
+        const x : [Users] = u;
+        var g : number = u.length;
         var i : number =0;
         if(isNaN(req.params.id)){
             res.status(500).send('BAD REQUEST');// ID in the request does not exsists
@@ -98,12 +106,12 @@ app.put('/api/user/:id',(req,res)=>{ //Update or change the value in the file us
             if(u[i]===undefined)
             res.status(404).send('404 Undefined');
             var value : number = 0;
+            
             if(req.params.id==u[i].id){
                 value = i;
                 const user ={ 
                     name: req.body.name
                 };
-                console.log(value);
                 x[value].name = user.name;
                 // users.push();
 
@@ -130,8 +138,8 @@ app.delete('/api/user/:id',(req,res)=>{ //Delete the value from the file
         // Check for errors 
         if (err) throw res.status(500).send('BAD REQUEST'); 
         // Converting to JSON 
-        const u : [{"id": number,"name": string}] = JSON.parse(data);
-        const g : number = u.length;
+        const u : [Users] = JSON.parse(data);
+        var g : number = u.length;
         var i : number = 0;
         var value : number = 0;
         if(isNaN(req.params.id)){

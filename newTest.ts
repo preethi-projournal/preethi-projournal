@@ -23,22 +23,19 @@ app.get('/api/users',(req,res)=>{ //Get all the user from the list
 
 //http://localhost:3000/api/user/1
 app.get('/api/user/:id',(req,res)=>{  //Get the specific user from the list
-
-    
-    
+    console.log(req.params.id);
+    if(isNaN(req.params.id)){
+        res.status(500).send('BAD REQUEST');// ID in the request does not exsists
+        return;
+    }
     fs.readFile("C:/Users/user/Desktop/Pro Journal/Files/Java script/data/users.json", function(err, data) { //Read content of the JSON file (users.json)
         // Check for errors 
         if (err) throw res.status(500).send('BAD REQUEST'); 
         // Converting to JSON 
         const u : [Users] = JSON.parse(data); 
         var g : number = u.length;
-        
         //const g : number = u.length;
         var i : number = 0;
-        if(isNaN(req.params.id)){
-            res.status(500).send('BAD REQUEST');// ID in the request does not exsists
-            return;
-        }
         while(i < g)
         {
             if(u[i]===undefined)
@@ -87,7 +84,11 @@ app.post('/api/user',(req,res)=>{ //Add new element to the file
 });
 
 //http://localhost:3000/api/user/1
-app.put('/api/user/:id',(req,res)=>{ //Update or change the value in the file using PUT http method   
+app.put('/api/user/:id',(req,res)=>{ //Update or change the value in the file using PUT http method  
+    if(isNaN(req.params.id)){
+        res.status(500).send('BAD REQUEST');// ID in the request does not exsists
+        return;
+    } 
     fs.readFile("C:/Users/user/Desktop/Pro Journal/Files/Java script/data/users.json", function(err, data) { 
         
         // Check for errors 
@@ -97,10 +98,6 @@ app.put('/api/user/:id',(req,res)=>{ //Update or change the value in the file us
         const x : [Users] = u;
         var g : number = u.length;
         var i : number =0;
-        if(isNaN(req.params.id)){
-            res.status(500).send('BAD REQUEST');// ID in the request does not exsists
-            return;
-        }
         while(i<g)
         {
             if(u[i]===undefined)
@@ -109,13 +106,7 @@ app.put('/api/user/:id',(req,res)=>{ //Update or change the value in the file us
             
             if(req.params.id==u[i].id){
                 value = i;
-                const user ={ 
-                    name: req.body.name
-                };
-                x[value].name = user.name;
-                // users.push();
-
-            
+                x[value].name = req.body.name;
                 fs.writeFile("C:/Users/user/Desktop/Pro Journal/Files/Java script/data/users.json", JSON.stringify(x), err => { 
                     // Checking for errors 
                     if (err) throw res.status(500).send('BAD REQUEST'); 
@@ -134,6 +125,10 @@ app.put('/api/user/:id',(req,res)=>{ //Update or change the value in the file us
 
 //http://localhost:3000/api/user/1
 app.delete('/api/user/:id',(req,res)=>{ //Delete the value from the file   
+    if(isNaN(req.params.id)){
+        res.status(500).send('BAD REQUEST');// ID in the request does not exsists
+        return;
+    }
     fs.readFile("C:/Users/user/Desktop/Pro Journal/Files/Java script/data/users.json", function(err, data) { 
         // Check for errors 
         if (err) throw res.status(500).send('BAD REQUEST'); 
@@ -142,11 +137,6 @@ app.delete('/api/user/:id',(req,res)=>{ //Delete the value from the file
         var g : number = u.length;
         var i : number = 0;
         var value : number = 0;
-        if(isNaN(req.params.id)){
-            res.status(500).send('BAD REQUEST');// ID in the request does not exsists
-            return;
-        }
-       
         var temp = new Array();
         while(i<g)
         {
